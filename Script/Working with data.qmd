@@ -1,0 +1,105 @@
+---
+title: "Working with Data"
+format:
+  html:
+    Self-contained: true
+editor: visual
+---
+
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+**Packages & Libray**
+
+```{r tidyberse}
+install.packages("tidyverse")
+```
+
+```{r descr}
+install.packages("descr")
+```
+
+```{r knir}
+install.packages("knir")
+```
+
+```{r dplyr}
+install.packages("dplyr")
+```
+
+```{r haven}
+install.packages("haven")
+```
+
+```{r labelled}
+intall.packages("labelled")
+```
+
+```         
+```
+
+```{r}
+library(tidyverse)
+library(descr)
+library(knitr)
+library(dplyr)
+library(readr)
+```
+
+```{r load-data}
+file.path <- file.path("..", "Data", "Dataset.csv")
+"/cloud/project/Data/myfile.csv"
+head(Dataset.csv)
+```
+
+**Load**
+
+```{r load-data}
+file.path <- "/cloud/project/Data/Dataset.csv"
+Dataset.csv <- read.csv(file.path)
+head(Dataset.csv)
+
+
+```
+
+**Freq Table**
+
+I choose this variable of Ownership, because I think it will be important to understand what kind of facilities are available for treatment, to different communities such as low income and wealthy communities.
+
+```{r}
+freq(as.ordered(Dataset.csv$Ownership), plot = FALSE)
+
+#What type of facilities are available for substance abuse disorder?
+```
+
+This variable will also play an important role, because addicts who are in recovery need the support of family and society, so is important to know about the services that facilities will provide not only to the patient but to his or her love one in order to support the sobriety.
+
+```{r}
+freq(as.ordered(Dataset.csv$Therapy.family.counseling), plot= FALSE)
+```
+
+This variable took my attention because there is many places that only might take patients with substance disorder only by reference but is this a barrier for treatment. Also is there more people reaching for help by them selves or because they were referred? I think this will be very interesting to explore
+
+```{r}
+freq(as.ordered(Dataset.csv$OFFERED.INTAKE.ASS.MNT.REFER....), plot = FALSE)
+```
