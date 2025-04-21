@@ -1,0 +1,175 @@
+---
+title: "Data Managment"
+format:
+ html:
+  self-contained: true
+  toc: true
+ pdf: 
+  number-sections: true
+  toc: true
+  pdf-engine: xelatex
+editor: visual
+---
+
+## Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+## Running Code
+
+When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+You can add options to executable code like this
+
+```{r}
+#| echo: false
+2 * 2
+```
+
+The `echo: false` option disables the printing of code (only output is displayed).
+
+# Packages & Library
+
+```{r library}
+library(tidyverse)
+library(descr)
+library(knitr)
+library(dplyr)
+library(readr)
+library(readxl)
+library(ggplot2)
+```
+
+# Load
+
+```{r}
+file.path <- "/cloud/project/Data/Dataset.csv"
+Dataset.csv <-read.csv(file.path)
+head(Dataset.csv)
+```
+
+```{r}
+Dataset.csv <-Dataset.csv[-c(1,2), ]
+#View(Dataset.csv)
+
+```
+
+# Freq Table
+
+```{r}
+colnames(Dataset.csv)
+```
+
+I choose this variable of ownership, because I think it will be important to understand what kind of facilities are available for treatment, to different communities such as low income and wealthy communities.
+
+```{r}
+freq(as.ordered(Dataset.csv$Ownership), plot = FALSE) 
+
+```
+
+When choosing this variable, I though about what type of facilities are available for substance use disorder? This variable will also play an important role, because addicts who are in recovery need the support of family and society, so is important to know about the services that facilities will provide not only to the patient but to their love ones in order to support their rehab process.
+
+```{r}
+freq(as.ordered(Dataset.csv$Therapy.family.counseling), plot = FALSE)
+```
+
+This variable took my attention because ther is many places that only might take in patients only by referrals, but this could be a barrier for treatment. Also is there more people reaching for help by them selves or because they were referred? I think this will be very interesting to explore
+
+```{r}
+freq(as.ordered(Dataset.csv$OFFERED.INTAKE.ASS.MNT.REFER....), plot = FALSE)
+```
+
+This variable is important because it will be important to understand how important is the group therapy to maintaining in abstinence during after rehab.
+
+```{r}
+freq(as.ordered(Dataset.csv$Therapy.group), plot = FALSE)
+```
+
+# Data Management
+
+won't be using this but it was created as an example for the assignment required on pdf
+
+```{r}
+Dataset.csv$THERAPY <-factor(ifelse((Dataset.csv$Therapy.family.counseling ==1 | Dataset.csv$Therapy.group ==1),"yes","no"))
+summary(Dataset.csv$THERAPY)
+  
+```
+
+# GRAPHS
+
+**Univariate Graphs**
+
+```{r}
+Dataset.csv %>%
+ggplot(aes(x=Therapy.family.counseling)) + geom_bar(fill="green",color = "blue") +
+ggtitle("Access to Services") +
+xlab("Therapy and Counseling") +
+ylab("count") +
+theme_minimal()
+```
+
+```{r}
+Dataset.csv %>%
+  ggplot(aes(x=Ownership)) +
+  
+  geom_bar(fill= "yellow", color = "blue") +
+  
+  ggtitle("Facilities Providing Services") +
+  xlab("Ownership") +
+  
+  ylab("Count") +
+  theme_minimal()
+
+```
+
+Quantitative Variable
+
+```{r}
+Dataset.csv %>%
+  ggplot(aes(x=))
+```
+
+**Bivariate Graphs**
+
+```{r}
+ggplot(data=Dataset.csv) +
+  stat_summary(aes(x=Therapy.group,
+                   y=Ownership),
+               fun.y =mean,
+               geom="bar")
+
+```
+
+```{r}
+ggplot(data=Dataset.csv) +
+  geom_boxplot(aes(x=Therapy.group,
+                   y=Therapy.group)) +
+  ggtitle("Services within organizations")
+```
+
+```{r}
+ggplot(data=Dataset.csv) +
+  geom_point(aes(x=Therapy.family.counseling,
+                 y=Ownership)) +
+  geom_smooth(aes(x=Therapy.family.counseling,
+                  y=Ownership),
+              method="1m")
+
+```
+
+```{r}
+ggplot( data= Dataset.csv) +
+  geom_point(aes(x=Therapy.group,
+                 y=Ownership,
+                 color= Therapy.group)) +
+  geom_smooth(aes(x=Therapy.group,
+                  y=Ownership,
+                  color=
+                    Therapy.group),
+              method="1m")
+
+```
