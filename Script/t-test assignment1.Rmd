@@ -1,0 +1,63 @@
+---
+title: "T-Test Assignment"
+author: "Zuleyma Castillo"
+output:
+  pdf_document: default
+  pdf: default
+---
+
+## T-test
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+
+file.path <- "/cloud/project/Data/Dataset.csv"
+Dataset.csv <-read.csv(file.path)
+head(Dataset.csv)
+```
+
+```{r}
+names(Dataset.csv)
+```
+
+```{r}
+
+# Clean FIPS state codes column
+Dataset.csv$CENSUS_STATE <- as.numeric(gsub("[^0-9]", "", Dataset.csv$`CENSUS.STATE.FIPS.CODES.LABE....`))
+summary(Dataset.csv$CENSUS_STATE)
+
+```
+
+```{r}
+valid_states <- na.omit(Dataset.csv$CENSUS_STATE)
+summary(valid_states)
+```
+
+```{r}
+t.test(valid_states, mu = 30, alternative = "two.sided")
+
+```
+
+```{r}
+library(ggplot2)
+
+# Create a data frame for ggplot
+df <- data.frame(fips = valid_states)
+
+# Simple ggplot histogram
+ggplot(df, aes(x = fips)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "white") +
+  labs(title = "FIPS Code Distribution",
+       x = "FIPS Code",
+       y = "Count") +
+  theme_minimal()
+
+
+```
+
+A one-sample t-test was conducted to determine whether the mean of state FIPS codes in the dataset differed significantly from 30. There was some manipulation on variables to convert categorical to numericals in order to complete the assigment
+
+The sample mean was 27.56. The results showed no statistically significant difference from the hypothesized population mean of 30, t(24) = -0.70, p = 0.491. The 95% confidence interval for the mean ranged from 20.37 to 34.75, which includes the value 30. Therefore, we fail to reject the null hypothesis and conclude that the average FIPS code in this sample does not significantly differ from 30.

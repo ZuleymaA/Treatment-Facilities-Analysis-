@@ -1,0 +1,63 @@
+---
+title: "Chi-Square Test Report"
+author: Zuleyma Almauger
+output: pdf_document
+---
+
+# Chi-square test
+
+```{r}
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+file.path <- "/cloud/project/Data/Dataset.csv"
+Dataset.csv <-read.csv(file.path)
+head(Dataset.csv)
+
+```
+
+```{r}
+colnames(Dataset.csv)
+```
+
+```{r}
+Dataset.csv <- Dataset.csv %>%
+  rename(SERVICES = PRIMARY_SERVICES)
+```
+
+```{r}
+table_data <-
+  table(Dataset.csv$SERVICES) 
+
+table_data
+```
+
+```{r}
+chisq.test(table(Dataset.csv$SERVICES))$expected
+```
+
+```{r}
+chisq_test_result <- chisq.test(table_data)
+```
+
+```{r}
+chisq_test_result
+
+```
+
+```{r}
+any(chisq_test_result$expected< 5)
+```
+
+```         
+```
+
+```{r}
+ggplot(Dataset.csv, aes(x= SERVICES)) + 
+  geom_bar() +
+  labs(title= "Observed Frequencies", x= "Category", y= "Count")
+```
+
+The chi-squared test for given probabilities resulted in  χ^2^ =41.892 with 4 degrees of freedom(df=4). And the corresponding P-value is 1.932e-08, which is a very small number. Therefore, we reject the null hypothesis.

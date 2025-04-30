@@ -1,0 +1,79 @@
+---
+title: "T-test"
+author: Zuleyma Almaguer
+output:
+  pdf_document:
+  toc: true
+  number_sections: true
+  latex_engine: xelatex
+---
+
+## t-test
+
+```{r}
+Dataset.csv <- read.csv("C:/Users/Zuleyma/Documents/Dataset.csv", skip = 1)
+
+```
+
+```{r}
+Dataset.csv <- read.csv(file.path)
+ head(Dataset.csv)
+```
+
+```{r}
+Dataset.csv <- Dataset.csv %>%
+  rename(CENSUS_STATE = CENSUS.STATE.FIPS.CODES.LABE....)
+```
+
+```{r}
+names(Dataset.csv)
+```
+
+```{r}
+unique(Dataset.csv$CENSUS_STATE)
+```
+
+```{r}
+Dataset.csv <- Dataset.csv[-1, ]
+```
+
+```{r}
+Dataset.csv$CENSUS_STATE <- as.numeric(gsub("[^0-9]", "", Dataset.csv$CENSUS_STATE))
+```
+
+```{r}
+summary(Dataset.csv$CENSUS_STATE)
+```
+
+```{r}
+summary(Dataset.csv$CENSUS_STATE)
+table(Dataset.csv$CENSUS_STATE, useNA = "ifany")
+```
+
+a variable was created to remove missing values(NA) in order to run the t-test
+
+```{r}
+valid_states <- na.omit(Dataset.csv$CENSUS_STATE)
+```
+
+```{r}
+t.test(valid_states, mu= 30)
+t.test(valid_states, mu = 0, alternative = "greater")
+t.test(valid_states, mu = 0, alternative = "less")
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(data.frame(StateCode = valid_states), aes(x = StateCode)) +
+  geom_histogram(binwidth = 5, fill = "lightblue", color = "black") +
+  geom_vline(xintercept = mean(valid_states), color = "blue") +
+  geom_vline(xintercept = 30, color = "red", linetype = "dashed",) +
+  labs(title = "Histogram of State Codes",
+       x = "State Code",
+       y = "Frequency") +
+  theme_minimal()
+
+```
+
+. A t-test was conducted to determine whether the average state code in data set differs from a hypothesize mean of 30. The results Sample mean=26.58333 a df= 23 and a p= 0.3374 this means since the p-value is greater than the significance level of 0.05, we fail to reject the null hypothesis.
